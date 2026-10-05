@@ -43,10 +43,15 @@ npm run dist                         # 先拉最新前端，再 electron-builder
 —— 数据（余额/消耗/挂起）来自该插件在 DSH 里注册的路由，桌面壳只读它们。
 
 ```bash
+git clone https://github.com/Yaing-Yan/dsh-whale-desktop.git
 cd dsh-whale-desktop
 npm install                       # 装有 npm_config_allow_scripts 等环境变量的 shell 需先 unset，见下
+npm run install:app               # 可选：拉取上游前端 + 生成图标 + 注册到系统应用列表
 npm start                         # 会自动 fetch:widget --if-missing；Linux 无 setuid sandbox 时用 npm run start:no-sandbox
 ```
+
+> 仓库里**没有**上游前端源码，`npm start` / `npm run install:app` 会自动拉取；
+> 也可随时手动 `npm run fetch:widget`。
 
 > 这台机器（Arch）的 shell 里 `npm_config_allow_scripts` 被设成只允许部分包，
 > 会直接报 `EALLOWSCRIPTS` 拒绝 Electron 的 postinstall。用
