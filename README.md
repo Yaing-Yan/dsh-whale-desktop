@@ -1,11 +1,10 @@
-# DSH 小鲸鱼 · 桌面版（dsh-whale-desktop）
+# dsh-whale-desktop
 
 把 DSH Web 插件 [`dsh-whale-widget`](https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget)
-**原样**渲染到一个独立的**透明、无边框、置顶**桌面悬浮窗里：余额、今日已用、峰谷、
-每轮消耗、提问/授权挂起……这些“广播事件”都照常冒泡 —— 相当于“在另一个地方登录了 DSH”，
-但**挂件设置与浏览器版完全独立**（改这边不碰那边，反之亦然）。
+**原样**渲染到一个独立的**透明、无边框、置顶**桌面悬浮窗里
+每轮消耗、提问/授权挂起……这些“广播事件”都照常冒泡 —— 相当于“在另一个地方登录了 DSH”。
 
-## 架构约定：本仓库只有“桌面壳”，不含上游源码
+## 本仓库只有“桌面壳”，不含上游源码
 
 上游 `dsh-whale-widget` 是**持续更新**的项目，而整体显示机制稳定。因此：
 
@@ -164,7 +163,7 @@ Windows `%APPDATA%\dsh-whale-desktop\settings\dsh.json`、macOS `~/Library/Appli
 - `origin`：DSH 不在 3080 端口时改这里（或环境变量 `DSHW_DSH_ORIGIN` / `DSHW_DSH_PORT`）。
 - 其它环境变量：`DSH_HOME`（数据目录）、`DSHW_PLUGIN_DIR`（插件前端位置）。
 
-## 本机文件
+## 文件
 
 | 路径 | 说明 |
 |---|---|
