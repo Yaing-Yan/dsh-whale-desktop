@@ -213,6 +213,32 @@ npx electron-builder --win nsis --mac dmg --linux AppImage
 
 （`electron-builder` 的图标、asar 等可按需在 `package.json` 的 `build` 字段配置；跨平台打包需在各平台分别执行或配置 CI。）
 
+## 排查：网络受限环境
+
+国内 / 公司代理环境常见两个坑，都已内置兜底：
+
+**① 取源失败（`fetch:widget` 报 fetch failed）**
+按序自动尝试：`--from`/`DSHW_WIDGET_DIR` → npm 官方 → **npmmirror 镜像** → `npm config get registry`
+→ **本机已装的 DSH 插件目录**（离线种子）。仍失败时会打印已尝试的源与命令建议。手动指定：
+
+```bash
+npm run fetch:widget -- --from "$HOME/.dsh/profiles/web/node_modules/dsh-whale-widget"   # 离线取本机插件
+DSHW_NPM_REGISTRY=https://registry.npmmirror.com npm run fetch:widget                    # 走镜像
+export https_proxy=http://IP:PORT && npm run fetch:widget                                # 走代理
+```
+
+**② `npm start` 报 `Electron failed to install correctly`**
+说明 `node_modules/electron/dist` 缺失（`npm ci`、安装脚本被拦、网络中断都会这样）。
+Electron 自带的惰性下载会直连 npm 源，在受限网络里会失败。用内置修复命令：
+
+```bash
+npm run repair:electron       # 默认走 npmmirror 镜像，可用 ELECTRON_MIRROR / https_proxy 覆盖
+```
+
+**③ 代理明明配了却全部失败**
+先确认代理进程真的在监听（`ss -tlnp | grep <端口>`）—— 指向已退出的本地代理（如 `127.0.0.1:7890/1080`）
+是这类「fetch failed」最常见的原因。
+
 ## 已知边界
 
 - Wayland（非 Hyprland）：客户端无法自定位是协议限制；KDE/GNOME 上用合成器手势（Alt+拖拽）。

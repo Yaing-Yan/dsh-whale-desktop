@@ -12,6 +12,7 @@
     "start": "npm run fetch:widget -- --if-missing && electron .",
     "start:no-sandbox": "npm run fetch:widget -- --if-missing && electron . --no-sandbox",
     "start:skip-fetch": "electron .",
+    "repair:electron": "node scripts/repair-electron.mjs",
     "install:app": "npm run fetch:widget -- --if-missing && npm run icons && node scripts/install-app.mjs",
     "uninstall:app": "node scripts/install-app.mjs --uninstall",
     "dist": "npm run fetch:widget:latest && npm run icons && electron-builder",
