@@ -1,0 +1,31 @@
+MIT License
+
+Copyright (c) 2026 Yaing-Yan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+本仓库（dsh-whale-desktop）是「桌面壳」，不包含上游挂件源码：
+
+- 上游项目：dsh-whale-widget（DeepSeek Balance Whale Widget）
+  https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget —— MIT License
+- 本壳在**编译期**从 npm 官方源拉取上游前端（vendor/，不进本仓库），
+  运行时只做字符串级适配补丁；上游版权与许可归其作者所有。
+- 应用图标由上游角色素材缩放生成（`npm run icons`），仅用于本应用的标识。

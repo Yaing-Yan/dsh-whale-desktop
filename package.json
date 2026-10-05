@@ -1,0 +1,77 @@
+{
+  "name": "dsh-whale-desktop",
+  "version": "0.1.0",
+  "description": "独立桌面版 DSH 小鲸鱼挂件（桌面壳）：编译期从上游 dsh-whale-widget 拉取前端源码，透明无边框悬浮窗，接收 DSH 广播事件冒泡，设置与浏览器版互不影响",
+  "main": "main/main.js",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "fetch:widget": "node scripts/fetch-widget.mjs",
+    "fetch:widget:latest": "node scripts/fetch-widget.mjs --force --version latest",
+    "icons": "electron scripts/make-icons.mjs",
+    "start": "npm run fetch:widget -- --if-missing && electron .",
+    "start:no-sandbox": "npm run fetch:widget -- --if-missing && electron . --no-sandbox",
+    "start:skip-fetch": "electron .",
+    "install:app": "npm run icons && node scripts/install-app.mjs",
+    "uninstall:app": "node scripts/install-app.mjs --uninstall",
+    "dist": "npm run fetch:widget:latest && npm run icons && electron-builder",
+    "dist:offline": "npm run fetch:widget -- --offline && npm run icons && electron-builder"
+  },
+  "allowScripts": [
+    "electron"
+  ],
+  "build": {
+    "appId": "io.github.dsh-whale-desktop",
+    "productName": "DSH 小鲸鱼（桌面版）",
+    "directories": {
+      "buildResources": "build"
+    },
+    "files": [
+      "main/**",
+      "renderer/**",
+      "preload.cjs",
+      "assets/**",
+      "bin/**",
+      "vendor/**"
+    ],
+    "extraMetadata": {
+      "name": "dsh-whale-desktop"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.png",
+      "shortcutName": "DSH 小鲸鱼（桌面版）"
+    },
+    "nsis": {
+      "createStartMenuShortcut": true,
+      "createDesktopShortcut": true
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.png",
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility",
+      "icon": "build/icons",
+      "synopsis": "DSH 小鲸鱼挂件的独立桌面版",
+      "description": "把 DSH 插件 dsh-whale-widget 渲染成透明无边框悬浮窗；余额/每轮消耗/提问·授权照常冒泡，设置与浏览器版互相独立。",
+      "desktop": {
+        "entry": {
+          "Name": "DSH 小鲸鱼（桌面版）",
+          "Comment": "独立桌面版 DSH 小鲸鱼挂件：透明悬浮窗，实时余额/消耗/提问·授权提示",
+          "Categories": "Utility;",
+          "StartupWMClass": "dsh-whale-desktop",
+          "Keywords": "DSH;DeepSeek;whale;balance;挂件;余额;小鲸鱼;"
+        }
+      }
+    }
+  },
+  "devDependencies": {
+    "electron": "^44.5.1"
+  }
+}

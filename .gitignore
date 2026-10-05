@@ -1,0 +1,14 @@
+node_modules/
+dist/
+out/
+
+# 打包图标由 assets/icon*.png 生成（npm run icons 可重建）
+build/icon.png
+build/icons/
+
+# 编译期从上游 dsh-whale-widget 拉取的前端源码：不进仓库（由 npm run fetch:widget 生成）
+vendor/
+
+# 运行时产物
+*.log
+.DS_Store

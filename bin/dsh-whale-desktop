@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# dsh-whale-desktop 启动器（Linux / macOS）
+# 应用列表里的 .desktop / .app 都指向这里；它负责解析自身位置、确保上游前端已就位，再拉起 Electron。
+set -euo pipefail
+
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$APP_DIR"
+
+ELECTRON="$APP_DIR/node_modules/.bin/electron"
+if [ ! -x "$ELECTRON" ]; then
+  echo "dsh-whale-desktop：未找到 Electron，请先在 $APP_DIR 执行 npm install" >&2
+  exit 1
+fi
+
+# 上游前端缺失时按需拉取（离线/失败都不阻塞：运行时会回退到本机已装插件）
+if [ ! -f "$APP_DIR/vendor/dsh-whale-widget/assets/whale-widget.js" ]; then
+  node "$APP_DIR/scripts/fetch-widget.mjs" --if-missing >/dev/null 2>&1 || true
+fi
+
+ARGS=()
+# Linux 上没有正确 setuid 的 chrome-sandbox 时需要 --no-sandbox（发行版普遍如此）
+if [ "$(uname -s)" = "Linux" ]; then
+  SANDBOX="$APP_DIR/node_modules/electron/dist/chrome-sandbox"
+  if [ ! -u "$SANDBOX" ]; then
+    ARGS+=(--no-sandbox)
+  fi
+fi
+
+exec "$ELECTRON" "$APP_DIR" "${ARGS[@]}" "$@"
