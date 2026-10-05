@@ -15,12 +15,22 @@
   关键补丁失配会**明确报错拒绝启动**（绝不带病运行），非关键补丁失配则降级并在状态提示里告警。
 
 ```bash
-npm run fetch:widget                 # 拉取 npm latest（编译前会自动跑）
+npm run fetch:widget                 # 取上游前端（多源自动回退，见下）
 npm run fetch:widget -- --version 0.3.18   # 复现构建：钉住某个上游版本
 npm run fetch:widget -- --offline    # 完全离线：沿用现有 vendor 副本
+npm run fetch:widget -- --from <目录> # 直接从本机已有的插件目录取源（不发网络请求）
 npm run fetch:widget:latest          # 强制重拉最新
 npm run dist                         # 先拉最新前端，再 electron-builder 打包
 ```
+
+**取源顺序**（任一成功即止，网络环境差也能落地）：
+
+1. 显式本地来源：`--from` / `DSHW_WIDGET_DIR` / `DSHW_PLUGIN_DIR`
+2. 各 registry 依次尝试：`DSHW_NPM_REGISTRY`（若设） → npm 官方 → **npmmirror 镜像** → `npm config get registry`
+3. **本机已安装的 DSH 插件目录**（`$DSH_HOME/profiles/*/node_modules/dsh-whale-widget`）—— 离线种子
+   （插件本来就必须装在 DSH 里数据才通，所以这条路几乎总能走通）
+
+全部不可用时会报错并列出已尝试的源与排查建议（代理/镜像/`--from`/`--version` 的具体命令）。
 
 拉取后会写 `vendor/dsh-whale-widget/VERSION.json`（版本 / tarball / sha512 / sha256 / 抓取时间），
 便于追溯「这次构建用的是哪个上游版本」。
